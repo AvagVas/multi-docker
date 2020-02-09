@@ -1,0 +1,22 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t vasavag/react-test -f ./client/Dockerfile.dev ./client
+
+scripts:
+    - docker run vasavag/react-test npm run test
+
+after_success:
+    - docker build -t vasavag/multi_client ./client
+    - docker build -t vasavag/multi_nginx ./nginx
+    - docker build -t vasavag/multi_server ./server
+    - docker build -t vasavag/multi_worker ./worker
+    # Log in to docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Take those images and push them to docker hub
+    - docker push vasavag/multi_client
+    - docker push vasavag/multi_nginx
+    - docker push vasavag/multi_server
+    - docker push vasavag/multi_worker
