@@ -5,8 +5,8 @@ services:
 before_install:
     - docker build -t vasavag/react-test -f ./client/Dockerfile.dev ./client
 
-# scripts:
-#    - docker run vasavag/react-test npm run test -- --coverage
+scripts:
+    - echo "skipping tests" # docker run vasavag/react-test npm run test -- --coverage
 
 after_success:
     - docker build -t vasavag/multi_client ./client
