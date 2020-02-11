@@ -1,0 +1,35 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name" : "client",
+            "image": "vasavag/multi-client",
+            "hostname": "client",
+            "essential": false
+        },
+        {
+            "name" : "server",
+            "image": "vasavag/multi-server",
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name" : "worker",
+            "image": "vasavag/multi-worker",
+            "hostname": "worker",
+            "essential": false
+        },
+        {
+            "name" : "nginx",
+            "image" : "vasavag/multi-nginx",
+            "essential" : true,
+            "portMappings":[
+                {
+                    "hostPort" : 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": ["client", "server"]
+        }
+    ]
+}
